@@ -264,9 +264,6 @@ public class DateRangeMonthView extends LinearLayout {
 
         if (currentCalendarMonth.get(Calendar.MONTH) != calendar.get(Calendar.MONTH)) {
             hideDayContainer(container);
-        } else if (today.after(calendar) && (today.get(Calendar.DAY_OF_YEAR) != calendar.get(Calendar.DAY_OF_YEAR))) {
-            disableDayContainer(container);
-            container.tvDate.setText(String.valueOf(date));
         } else {
 
             @DateRangeCalendarManager.RANGE_TYPE
@@ -275,7 +272,10 @@ public class DateRangeMonthView extends LinearLayout {
                 makeAsSelectedDate(container, type);
             } else if (type == DateRangeCalendarManager.RANGE_TYPE.MIDDLE_DATE) {
                 makeAsRangeDate(container);
-            } else {
+            }else if (today.after(calendar) && (today.get(Calendar.DAY_OF_YEAR) != calendar.get(Calendar.DAY_OF_YEAR))) {
+                disableDayContainer(container);
+                container.tvDate.setText(String.valueOf(date));
+            }  else {
                 enabledDayContainer(container);
             }
 
@@ -283,7 +283,7 @@ public class DateRangeMonthView extends LinearLayout {
         }
 
         container.rootView.setTag(DayContainer.GetContainerKey(calendar));
-    }
+}
 
     /**
      * To hide date if date is from previous month.
@@ -310,8 +310,8 @@ public class DateRangeMonthView extends LinearLayout {
         container.rootView.setBackgroundColor(Color.TRANSPARENT);
         container.tvDate.setTextColor(calendarStyleAttr.getDisableDateColor());
         container.rootView.setVisibility(VISIBLE);
-        container.rootView.setOnClickListener(null);
-    }
+        container.rootView.setOnClickListener(dayClickListener);
+}
 
     /**
      * To enable date by enabling click listeners.
